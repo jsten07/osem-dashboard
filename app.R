@@ -49,15 +49,9 @@ filter_by_model <- function(boxes) {
   
 }
 
-
-# boxes_all = osem_boxes(cache = "./data/")
-# boxes_all <- readRDS("./data/recent_boxes")
-
-# saveRDS(readRDS("./data/boxes_old"), "./data/recent_boxes")
-
 # Read boxes from rds file; much faster than requesting by osem_boxes; BUT: need to be updated manually
 # TODO: When setting up dashboard on server, update boxes automatically, e.g. every night by running the following in a cron job or similar
-# saveRDS(osem_boxes(), "./data/recent_boxes")
+    # saveRDS(osem_boxes(), "./data/recent_boxes")
 boxes_all <- readRDS("./data/recent_boxes")
 
 # get date of most recent update
@@ -92,6 +86,7 @@ update_data <- function() {
 
 # Define user interface
 ui <- dashboardPage(
+  skin = 'green',
   # Header, displayed at top-left of website and as browser-tab text
   dashboardHeader(title = "oSeM-Stats"),
   # Sidebar
@@ -146,7 +141,7 @@ ui <- dashboardPage(
         ),
         # diagram controls
         box(
-          title = "Diagram Controls",
+          title = "Filter für Diagramme",
           solidHeader = T,
           width = 4,
           # slider to control the date of data displayed in graphs
@@ -276,7 +271,8 @@ server <- function(input, output, session) {
                colour = exposure)) +
       geom_line() +
       scale_colour_manual(values = exposure_colors) +
-      xlab('Registration Date') + ylab('senseBox count')
+      xlab('Datum Registrierung') + ylab('Anzahl der Senseboxen') + 
+      theme(text = element_text(size=16))
   })
   
   # activity boxplots (row two, box one)
@@ -298,7 +294,8 @@ server <- function(input, output, session) {
     # Create plot
     ggplot(duration, aes(x = substr(as.character(year), 0, 4), y = duration)) +
       geom_boxplot() +
-      coord_flip() + ylab('Duration active in Days') + xlab('Year of Registration')
+      coord_flip() + ylab('Aktivität in Tagen') + xlab('Jahr der Registrierung') + 
+      theme(text = element_text(size=16))
   })
   
   # Date of last update of data (row one, box two)
@@ -351,7 +348,7 @@ server <- function(input, output, session) {
       value = nrow(boxes24h),
       color = "aqua",
       icon = icon("hourglass"),
-      fill = TRUE
+      # fill = TRUE
     )
   })
   
@@ -365,7 +362,7 @@ server <- function(input, output, session) {
       value = nrow(boxes30d),
       color = "teal",
       icon = icon("calendar"),
-      fill = TRUE
+      # fill = TRUE
     )
   })
   
