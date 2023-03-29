@@ -7,6 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
+# To deploy on an own server see: https://posit.co/download/shiny-server/ 
+
 # library(shiny)
 library(shinydashboard)
 library(dplyr)
@@ -119,11 +121,11 @@ ui <- dashboardPage(
         # box and button to update data
         box(
           title = "Daten-Datum",
-          width = 3,
+          width = 3, 
           "Die dargestellten Daten sind zuletzt aktualisiert worden am: ",
           br(),
-          textOutput("dataDate"),
-          br(),
+          strong(textOutput("dataDate")),
+          # br(),
           "Wenn du die neuesten Daten haben möchtest, drücke den Knopf. Dies kann einige Momente dauern.",
           br(),
           actionButton("update",
